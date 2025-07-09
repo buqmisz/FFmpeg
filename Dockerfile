@@ -1,47 +1,7 @@
-FROM ubuntu:22.04
+FROM jrottenberg/ffmpeg:6.1-ubuntu
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-  autoconf \
-  automake \
-  build-essential \
-  cmake \
-  git \
-  libtool \
-  pkg-config \
-  texinfo \
-  yasm \
-  zlib1g-dev \
-  libx264-dev \
-  libx265-dev \
-  libvpx-dev \
-  libfdk-aac-dev \
-  libmp3lame-dev \
-  libopus-dev \
-  libass-dev \
-  libfreetype6-dev \
-  libfontconfig1-dev \
-  && rm -rf /var/lib/apt/lists/*
+# اختياري: نسخ ملفات إن أردت استخدامها
+# COPY ./some-folder /app
 
-# Set working directory
-WORKDIR /app
-
-# Copy source files
-COPY . .
-
-# Configure and build
-RUN ./configure \
-  --enable-gpl \
-  --enable-libx264 \
-  --enable-libx265 \
-  --enable-libvpx \
-  --enable-libfdk-aac \
-  --enable-libmp3lame \
-  --enable-libopus \
-  --enable-libass \
-  --enable-libfreetype && \
-  make -j$(nproc) && \
-  make install
-
-# Set default command
+# يمكنك تحديد الأمر الذي تريده كـ default
 CMD ["ffmpeg", "-version"]
